@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from app.models import db, Item
+from app.utils import fetch_data  # Import the fetch_data utility function
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///inventory.db'
@@ -50,6 +51,11 @@ def delete_item(item_id):
     db.session.commit()
     return jsonify({'message': 'Item deleted successfully'})
 
+@app.route('/employees', methods=['GET'])
+def get_employees():
+    query = "SELECT * FROM employees"
+    df = fetch_data(query)
+    return jsonify(df.to_dict(orient='records'))
+
 if __name__ == '__main__':
     app.run(debug=True)
-

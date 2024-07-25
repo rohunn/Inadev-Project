@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify
 from app.models import db, Item
-from app.utils import fetch_data  # Import the fetch_data utility function
+from flask_migrate import Migrate
+from config import Config
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///inventory.db'
+app.config = Config['SQLALCHEMY_DATABASE_URI']
 db.init_app(app)
+migrate = Migrate(app, db)
 
 @app.route('/items', methods=['POST'])
 def add_item():
@@ -56,6 +58,6 @@ def get_employees():
     query = "SELECT * FROM employees"
     df = fetch_data(query)
     return jsonify(df.to_dict(orient='records'))
-
+#json is a collection of keys and values, connect routes to frontend
 if __name__ == '__main__':
     app.run(debug=True)

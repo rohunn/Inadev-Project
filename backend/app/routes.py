@@ -1,12 +1,28 @@
 from flask import Flask, request, jsonify
-from app.models import db, Item
+from .models import db, Item
 from flask_migrate import Migrate
-from config import Config
+from flask_cors import CORS
+import os
+from flask import send_from_directory
 
 app = Flask(__name__)
-app.config = Config['SQLALCHEMY_DATABASE_URI']
+app = Flask(__name__, static_folder='../frontend/build', static_url_path='/')
+#app.config = Config['SQLALCHEMY_DATABASE_URI']
+app.config.from_object('backend.config.Config')
 db.init_app(app)
 migrate = Migrate(app, db)
+# Enable CORS for all routes
+from flask_cors import CORS #// move the import to top CORS(app) @app.route('/')
+@app.route('/<path:path>')
+def serve(path='index.html'):
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)): return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
+@app.route('/items', methods=['GET'])
+def get_items():
+    items = Item.query.all()
+
+    return jsonify([item.serialize() for item in items])
 
 @app.route('/items', methods=['POST'])
 def add_item():

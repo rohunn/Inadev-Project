@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import AddItem from './AddItem';
+import AddItem from './Components/AddItem';
 
 const inventoryItems = [
   { id: 1, name: 'Socks', quantity: 10 },
@@ -40,4 +40,7 @@ function App() {
 
 export default App;
 
+App.listen(3000, () => {
+  console.log('Server is listening on Port 3000')
+})
 

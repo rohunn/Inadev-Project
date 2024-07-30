@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getItems } from '../services/API';
+import { getItems } from '../Services/API';
 
 const HomePage = () => {
   const [items, setItems] = useState([]);
@@ -34,7 +34,7 @@ const HomePage = () => {
       <ul>
         {items.map(item => (
           <li key={item.id}>
-            {item.name} - {item.description} - {item.quantity} - ${item.price}
+            {item.name} - {item.description} - {item.quantity} - {item.price}
           </li>
         ))}
       </ul>

@@ -1,24 +1,45 @@
 import React, { useState } from 'react';
 import './AddItem.css';
+import { useNavigate } from'react-router-dom';
+import { addItem } from '../Services/API';
 
 function AddItem() {
-  const [itemName, setItemName] = useState('');
-  const [itemQuantity, setItemQuantity] = useState('');
-
+  const [name, setName] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [price, setPrice] = useState('');
+  const [description, setDescription] = useState('');
+  const navigate = useNavigate();
   const handleNameChange = (e) => {
-    setItemName(e.target.value);
+    setName(e.target.value);
   };
 
   const handleQuantityChange = (e) => {
-    setItemQuantity(e.target.value);
+    setQuantity(e.target.value);
+  };
+
+  
+  const handlePriceChange = (e) => {
+    setPrice(e.target.value);
+  };
+
+  
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('New Item:', { name: itemName, quantity: itemQuantity });
+    console.log('New Item:', { name: name, price: price, description: description, quantity: quantity });
+    const newItem = { name: name, price: price, description: description, quantity: quantity };
+    addItem(newItem)
+            .then(response => {
+                navigate('/');
+            })
+            .catch(error => {
+                console.error('There was an error adding the item!', error);
+            });
+ 
     // Reset form fields
-    setItemName('');
-    setItemQuantity('');
   };
 
   return (
@@ -29,21 +50,45 @@ function AddItem() {
       <main>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="itemName">Item Name:</label>
+            <label htmlFor="name">Item Name:</label>
             <input
               type="text"
-              id="itemName"
-              value={itemName}
+              id="name"
+              value={name}
               onChange={handleNameChange}
               required
             />
           </div>
+
           <div className="form-group">
-            <label htmlFor="itemQuantity">Quantity:</label>
+            <label htmlFor="price">Item price:</label>
             <input
               type="number"
-              id="itemQuantity"
-              value={itemQuantity}
+              id="price"
+              value={price}
+              onChange={handlePriceChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="description">Item description:</label>
+            <input
+              type="text"
+              id="description"
+              value={description}
+              onChange={handleDescriptionChange}
+              required
+            />
+          </div>
+
+        
+          <div className="form-group">
+            <label htmlFor="quantity">Quantity:</label>
+            <input
+              type="number"
+              id="quantity"
+              value={quantity}
               onChange={handleQuantityChange}
               required
             />

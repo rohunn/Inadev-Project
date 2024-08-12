@@ -8,7 +8,8 @@ baseURL: 'http://localhost:5000/api',  // Use the full URL for the backend
 });
  
 export const getItems = () => api.get('/items');
- 
+export const addItem = (item) => api.post('/add-item',item); 
+export const deleteItem = (itemId) => api.delete('/delete-item',{ data: { itemId } });
 export default api;
 
 // export const getItem = async (id) => {

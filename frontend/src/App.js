@@ -1,13 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './Components/HomePage';
+import AddItem from './Components/AddItem';
+import DeleteItem from './Components/DeleteItem';
  
 function App() {
     return (
         <Router>
             <Routes>
             <Route path="/" element={<HomePage />} />
-            </Routes>
+            <Route path ="/add-item" element={<AddItem />} />
+            <Route path ="/delete-item" element={<DeleteItem />} />
+            {/* <Route path ="/EditItem" element={<EditItem />} /> */}
+</Routes>
         </Router>
     );
 }
